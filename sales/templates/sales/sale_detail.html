@@ -1,0 +1,96 @@
+{% extends "sales/base.html" %}
+{% block content %}
+    <div id="campaign-wrapper" class="campaign_wrapper"></div>
+    <div id="otsing" class="otsing"></div>
+    <div id="headline_of_category" class="category_headline" ></div>
+    <div id="sale-wrapper" class="sales-box"></div>
+
+<div id="detail_general_section" class="detail_general_section">
+    <div class="arrow_category">
+        <svg class="arrow" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"viewBox="0 0 492.004 492.004" style="enable-background:new 0 0 492.004 492.004;" xml:space="preserve"><g><g><path d="M382.678,226.804L163.73,7.86C158.666,2.792,151.906,0,144.698,0s-13.968,2.792-19.032,7.86l-16.124,16.12c-10.492,10.504-10.492,27.576,0,38.064L293.398,245.9l-184.06,184.06c-5.064,5.068-7.86,11.824-7.86,19.028c0,7.212,2.796,13.968,7.86,19.04l16.124,16.116c5.068,5.068,11.824,7.86,19.032,7.86s13.968-2.792,19.032-7.86L382.678,265c5.076-5.084,7.864-11.872,7.848-19.088C390.542,238.668,387.754,231.884,382.678,226.804z"/></g></g></svg>
+        <p class="arrow_text">{{data.category}}</p>
+        <svg class="arrow" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"viewBox="0 0 492.004 492.004" style="enable-background:new 0 0 492.004 492.004;" xml:space="preserve"><g><g><path d="M382.678,226.804L163.73,7.86C158.666,2.792,151.906,0,144.698,0s-13.968,2.792-19.032,7.86l-16.124,16.12c-10.492,10.504-10.492,27.576,0,38.064L293.398,245.9l-184.06,184.06c-5.064,5.068-7.86,11.824-7.86,19.028c0,7.212,2.796,13.968,7.86,19.04l16.124,16.116c5.068,5.068,11.824,7.86,19.032,7.86s13.968-2.792,19.032-7.86L382.678,265c5.076-5.084,7.864-11.872,7.848-19.088C390.542,238.668,387.754,231.884,382.678,226.804z"/></g></g></svg>
+        <p class="arrow_text">{{data.headline}}</p>
+
+    </div>
+    <div class="image_store_link">
+        {% if data.store == "Rimi" %}
+            <a href="https://www.rimi.ee/pakkumised"><img src="https://upload.wikimedia.org/wikipedia/commons/d/da/Rimi_Baltic_Logo.png" width="90px" height="80px"}></a>
+        {% else %}
+            <a href="https://www.maxima.ee/pakkumised"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Maxima_logo.svg/1280px-Maxima_logo.svg.png" width="90px" height="20px" style="margin: 30px 0px"></a>
+        {% endif %} 
+    </div>
+    <div class="detail_info">
+        <div class="offer_image">
+            <img src={{data.image}} width="320px" height="250px">
+        </div>
+        <div class="offer_textinfo">
+            <p class="soodus">{{data.headline}}</p>
+            {% if data.discount == 0 or data.discount == null %}
+                <p class="soodus"></p>
+            {% else %}
+                <p class="soodus_discount">{{data.discount}}</p>
+            {% endif %}
+            <div class="soodus_old_price_box">
+                {% if data.old_price == "0" %}
+                    <p class="soodus"></p>
+                {% else %}
+                    <p class="soodus_old_price" >{{data.old_price}}</p>
+                {% endif %}
+            </div>
+
+            <div class="soodus_new_price_box">
+                {% if data.category == "Alkohol" %}
+                <p class="soodus">{{ data.new_price }}</p>
+                {% else %}
+                <p class="soodus_new_price">{{data.new_price}}</p>
+                {% endif %}
+            </div>
+            {% if user.is_authenticated %}
+            <div class="border_outline">
+                <button class="add_product" value="{{data.id}}" onclick="sendData(value)">Lisa toode</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="soodus_teised_tooted">
+    <p class="soodus">Selle kategooria teised tooted</p>
+    </div>
+    <div class="sales-box"> 
+        {% for sale in sales %}
+            {% if sale.category == data.category and sale.id != data.id %}
+                <div class="sales-box">
+                            
+                    <a class="main_href" style="text-decoration: none; color: black;" href="http://127.0.0.1:8000/sale/{{sale.id}}/"><div id="{{sale.id}}" class="card_div">
+                        {% if sale.store == "Rimi" %}
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/d/da/Rimi_Baltic_Logo.png" width="70px" height="60px"}>
+                        {% else %}
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Maxima_logo.svg/1280px-Maxima_logo.svg.png" width="70px" height="20px">
+                        {% endif %} 
+                    <div class="product_container">
+                        <img class="card-img-top" src={{sale.image}} width="200px" height="180px" >
+                    </div>
+                    <div class="card-body">
+                        <div class="price_section">
+                            <p class="card-title">{{sale.headline}}</p>
+                            {% if sale.discount == 0 or sale.discount == null %}
+                                <p class="soodus"></p>
+                            {% else %}
+                                <p class="soodus">{{sale.discount}}</p>
+                            {% endif %}
+                            <p class="soodus">{{sale.new_price}}</p>
+                        </div>
+                    </div>
+                    </div></a>
+                            
+                </div>
+                   
+            {% endif %}
+        {% endfor %}
+    </div>
+
+</div>      
+
+    
+            
+{% endblock content %}

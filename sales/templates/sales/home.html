@@ -1,0 +1,61 @@
+{% extends "sales/base.html" %}
+{% block content %}
+    <div id="campaign-wrapper" class="campaign_wrapper">
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-flex justify-content-center w-75" src="https://www.maxima.ee/cache/auto_700_400_Maxima_Cashback_kinkekaart_700x400px-9363.jpg" alt="First slide" style="width: 200px; height: 300px; margin: 0 auto">
+            </div>
+        {% for campaign in campaigns %}
+             <div class="carousel-item">
+                    <a href="{{campaign.kmp_url}}">
+                    <img class="d-flex justify-content-center w-75" src="{{campaign.kmp_bg_image}}" alt="campaign picture" style="width: 200px; height: 300px; margin: 0 auto; filter: brightness(75%);">
+                    </a>
+                    <div class="carousel-caption"><h5 style="font-weight: bold; text-align: center;">{{campaign.kmp_desc}}</h5></div>
+                </div>
+        {% endfor %}
+            </div> 
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>          
+        </div>
+    </div>
+    <div id="otsing" class="otsing">
+    <div class="input-group rounded">
+        <input id="search-sale" type="search" class="form-control rounded" placeholder="Otsi toodet..." aria-label="Otsing" aria-describedby="search-addon" />
+        <span class="input-group-text border-0" id="search-addon">
+            <i class="fas fa-search" onclick="searchResults()"></i>
+        </span>
+    </div>
+    </div>
+    <div id="headline_of_category" class="category_headline" ></div>
+    <div id="sale-wrapper" class="sales-box">
+    {% for sale in sales %}
+        <a class="main_href" style="text-decoration: none; color: black;" href="sale/{{sale.id}}/"><div id="{{sale.id}}" class="card_div">
+            {% if sale.store == "Rimi" %}
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/da/Rimi_Baltic_Logo.png" width="70px" height="60px"}>
+            {% else %}
+               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Maxima_logo.svg/1280px-Maxima_logo.svg.png" width="70px" height="20px">
+            {% endif %} 
+                <div class="product_container">
+                    <img src={{sale.image}} width="250px" height="200px" >
+                </div>
+                <div class="price_section">
+                    <p>{{sale.headline}}</p>
+                    {% if sale.discount == "0" or sale.discount == null %}
+                        <p class="soodus"></p>
+                    {% else %}
+                        <p class="soodus">{{sale.discount}}</p>
+                    {% endif %}
+                    <p class="soodus">{{sale.new_price}}</p>
+                </div>
+        </div>
+        </a>
+    {% endfor %}
+    </div>
+{% endblock content %}
